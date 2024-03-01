@@ -1,54 +1,68 @@
+// 
+
+
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authroute.js";
 import equipmentRoutes from './routes/equipmentRoutes.js';
-import { getAllCategories,createCategory } from "./routes/categoryroutes.js";
-import {registerUser,loginUser,getUserProfile,updateUserProfile} from "./routes/userroute.js"
+import { viewEquipmentController,addEquipmentController,updateEquipmentController,deleteEquipmentController } from "./controller/equipmentController.js";
+import { createCategory, getAllCategories } from "./controller/categoryController.js";
+import { registerUser, loginUser, getUserProfile, updateUserProfile } from "./controller/usercontroller.js";
 
 import cors from "cors";
 
-// const express = require("express");
 
-
-//configuAre env
+// Load environment variables
 dotenv.config();
 
-//databse config
+// Connect to the database
 connectDB();
 
-//rest object
+// Create Express app
 const app = express();
 
-//middelwares
+// Middleware
 app.use(cors());
 app.use(express.json());
 
+// Routes
+app.use("/api/equipment", equipmentRoutes); // Mount equipment routes
+app.use("/api/auth", authRoutes); // Mount authentication routes
 
-//routes
-app.use("/api", equipmentRoutes);
+app.get('/equipment', viewEquipmentController);
 
-app.use("api",authRoutes);
+app.post('/equipment/add', addEquipmentController);
 
-app.use("api",getAllCategories);
+app.put('/equipment/update/:id', updateEquipmentController);
 
-app.use("api",createCategory);
-
-app.use("api",registerUser,loginUser,updateUserProfile,getUserProfile);
+app.delete('/equipment/delete/:id', deleteEquipmentController);
 
 
-//rest api
+
+// Category routes
+app.post("/api/categories", createCategory);
+app.get("/api/categories", getAllCategories);
+
+// User routes
+app.post("/api/users/register", registerUser);
+app.post("/api/users/login", loginUser);
+app.get("/api/users/profile", getUserProfile);
+app.put("/api/users/profile", updateUserProfile);
+
+// Default route
 app.get("/", (req, res) => {
   res.send("<h1>Equipment Hiring</h1>");
 });
 
-//PORT
-const PORT = process.env.PORT || 9000;
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Internal Server Error");
+});
 
-//run listen
+// Start the server
+const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
-  console.log(
-    `Server Running on ${process.env.DEV_MODE} mode on port ${PORT}`
-    
-  );
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
