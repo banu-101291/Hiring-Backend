@@ -2,6 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authroute.js";
+import equipmentRoutes from './routes/equipmentRoutes.js';
+import { getAllCategories,createCategory } from "./routes/categoryroutes.js";
+import {registerUser,loginUser,getUserProfile,updateUserProfile} from "./routes/userroute.js"
 
 import cors from "cors";
 
@@ -23,8 +26,15 @@ app.use(express.json());
 
 
 //routes
-app.use("/api/auth", authRoutes);
+app.use("/api", equipmentRoutes);
 
+app.use("api",authRoutes);
+
+app.use("api",getAllCategories);
+
+app.use("api",createCategory);
+
+app.use("api",registerUser,loginUser,updateUserProfile,getUserProfile);
 
 
 //rest api

@@ -1,6 +1,6 @@
 import Equipment from '../models/Equipment.js';
 
-// Controller function to add new equipment
+// add new equipment
 export const addEquipmentController = async (req, res) => {
   const { name, description, quantity } = req.body;
   try {
@@ -13,7 +13,7 @@ export const addEquipmentController = async (req, res) => {
   }
 };
 
-// Controller function to update equipment information
+// update equipment information
 export const updateEquipmentController = async (req, res) => {
   const { id } = req.params;
   const { name, description, quantity } = req.body;
@@ -30,7 +30,7 @@ export const updateEquipmentController = async (req, res) => {
   }
 };
 
-// Controller function to delete equipment
+// delete equipment
 export const deleteEquipmentController = async (req, res) => {
   const { id } = req.params;
   try {
