@@ -5,12 +5,12 @@ import {
   addEquipmentController, 
   updateEquipmentController, 
   deleteEquipmentController 
-} from '../controllers/equipmentController.js';
+} from '../controller/equipmentController.js';
 
 const router = express.Router();
 
 // Route for viewing available equipment (accessible to all users)
-router.get('/equipment', viewEquipmentController);
+router.get('/viewequipment', viewEquipmentController);
 
 // Routes accessible only to admin users
 router.use(isAdmin);
